@@ -203,7 +203,12 @@ func (c *Client) CreateCard(card *Card, extraArgs Arguments) error {
 	if pos, ok := extraArgs["pos"]; ok {
 		args["pos"] = pos
 	}
-	err := c.Post(path, args, &card)
+	var err error
+	if card.ID == "" {
+		err = c.Post(path, args, &card)
+	} else {
+		err = c.Put(path, args, &card)
+	}
 	if err == nil {
 		card.client = c
 	}
@@ -228,7 +233,12 @@ func (l *List) AddCard(card *Card, extraArgs Arguments) error {
 	if pos, ok := extraArgs["pos"]; ok {
 		args["pos"] = pos
 	}
-	err := l.client.Post(path, args, &card)
+	var err error
+	if card.ID == "" {
+		err = l.client.Post(path, args, &card)
+	} else {
+		err = l.client.Put(path, args, &card)
+	}
 	if err == nil {
 		card.client = l.client
 	} else {
