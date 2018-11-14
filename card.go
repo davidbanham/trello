@@ -193,6 +193,9 @@ func (c *Client) CreateCard(card *Card, extraArgs Arguments) error {
 		"idMembers": strings.Join(card.IDMembers, ","),
 		"idLabels":  strings.Join(card.IDLabels, ","),
 	}
+	if card.ID != "" {
+		args["id"] = card.ID
+	}
 	if card.Due != nil {
 		args["due"] = card.Due.Format(time.RFC3339)
 	}
@@ -214,6 +217,9 @@ func (l *List) AddCard(card *Card, extraArgs Arguments) error {
 		"desc":      card.Desc,
 		"idMembers": strings.Join(card.IDMembers, ","),
 		"idLabels":  strings.Join(card.IDLabels, ","),
+	}
+	if card.ID != "" {
+		args["id"] = card.ID
 	}
 	if card.Due != nil {
 		args["due"] = card.Due.Format(time.RFC3339)
