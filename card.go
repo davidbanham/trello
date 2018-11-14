@@ -185,6 +185,9 @@ func (c *Card) Update(args Arguments) error {
 
 func (c *Client) CreateCard(card *Card, extraArgs Arguments) error {
 	path := "cards"
+	if card.ID != "" {
+		path += "/" + card.ID
+	}
 	args := Arguments{
 		"name":      card.Name,
 		"desc":      card.Desc,
@@ -192,9 +195,6 @@ func (c *Client) CreateCard(card *Card, extraArgs Arguments) error {
 		"idList":    card.IDList,
 		"idMembers": strings.Join(card.IDMembers, ","),
 		"idLabels":  strings.Join(card.IDLabels, ","),
-	}
-	if card.ID != "" {
-		args["id"] = card.ID
 	}
 	if card.Due != nil {
 		args["due"] = card.Due.Format(time.RFC3339)
@@ -212,14 +212,14 @@ func (c *Client) CreateCard(card *Card, extraArgs Arguments) error {
 
 func (l *List) AddCard(card *Card, extraArgs Arguments) error {
 	path := fmt.Sprintf("lists/%s/cards", l.ID)
+	if card.ID != "" {
+		path += "/" + card.ID
+	}
 	args := Arguments{
 		"name":      card.Name,
 		"desc":      card.Desc,
 		"idMembers": strings.Join(card.IDMembers, ","),
 		"idLabels":  strings.Join(card.IDLabels, ","),
-	}
-	if card.ID != "" {
-		args["id"] = card.ID
 	}
 	if card.Due != nil {
 		args["due"] = card.Due.Format(time.RFC3339)
